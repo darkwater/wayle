@@ -10,10 +10,15 @@ pub(super) struct DeviceOptionItem {
     is_active: bool,
 }
 
+#[derive(Debug)]
+pub(super) enum DeviceOptionItemMsg {
+    SelectPort,
+}
+
 #[relm4::factory(pub(super))]
 impl FactoryComponent for DeviceOptionItem {
     type Init = DeviceInfo;
-    type Input = ();
+    type Input = DeviceOptionItemMsg;
     type Output = ();
     type CommandOutput = ();
     type ParentWidget = gtk::ListBox;
@@ -57,14 +62,29 @@ impl FactoryComponent for DeviceOptionItem {
                         set_label: &self.description,
                     },
 
-                    gtk::Label {
-                        add_css_class: "audio-device-option-subtitle",
+                    gtk::Button {
+                        add_css_class: "audio-device-option-subtitle-btn",
+                        set_cursor_from_name: Some("pointer"),
                         set_halign: gtk::Align::Start,
-                        set_ellipsize: pango::EllipsizeMode::End,
+                        connect_clicked => DeviceOptionItemMsg::SelectPort,
+
                         #[watch]
                         set_visible: self.subtitle.is_some(),
-                        #[watch]
-                        set_label: self.subtitle.as_deref().unwrap_or_default(),
+
+                        gtk::Box {
+                            gtk::Label {
+                                add_css_class: "audio-device-option-subtitle",
+                                set_halign: gtk::Align::Start,
+                                set_ellipsize: pango::EllipsizeMode::End,
+                                #[watch]
+                                set_label: self.subtitle.as_deref().unwrap_or_default(),
+                            },
+
+                            gtk::Image {
+                                add_css_class: "audio-device-option-subtitle-chevron",
+                                set_icon_name: Some("ld-chevron-right-symbolic"),
+                            },
+                        },
                     },
                 },
 

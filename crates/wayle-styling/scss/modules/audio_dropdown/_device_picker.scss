@@ -74,9 +74,15 @@ button.picker-back {
             color: var(--fg-default);
         }
 
-        .audio-device-option-subtitle {
-            font-size: var(--text-md);
-            color: var(--fg-subtle);
+        .audio-device-option-subtitle-btn {
+            .audio-device-option-subtitle {
+              font-size: var(--text-md);
+              color: var(--fg-subtle);
+            }
+
+            &:hover .audio-device-option-subtitle {
+              color: var(--fg-default);
+            }
         }
 
         .audio-device-option-check {
